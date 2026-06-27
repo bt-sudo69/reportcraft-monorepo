@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReportCraft – Live Share</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0b; color: #f4f4f5; -webkit-font-smoothing: antialiased; padding: 32px; }
+    .dashboard { max-width: 1100px; margin: 0 auto; background: #111113; border: 1px solid #232325; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid #232325; background: #141415; }
+    .logo { font-weight: 700; font-size: 1.15rem; background: linear-gradient(135deg, #6c5ce7, #a29bfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .badge { padding: 4px 12px; border-radius: 999px; background: rgba(108,92,231,0.15); border: 1px solid rgba(108,92,231,0.3); color: #a29bfe; font-size: 0.75rem; font-weight: 500; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #6c5ce7, #fd79a8); }
+
+    .share-banner {
+      background: rgba(108,92,231,0.1);
+      border-bottom: 1px solid rgba(108,92,231,0.2);
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .share-banner span { font-size: 0.9rem; }
+    .share-banner strong { color: #a29bfe; }
+    .share-url {
+      display: flex; align-items: center; gap: 8px;
+      background: #0a0a0b; border: 1px solid #333; border-radius: 8px;
+      padding: 8px 12px;
+    }
+    .share-url input {
+      background: none; border: none; color: #a1a1aa;
+      font-size: 0.85rem; font-family: inherit; outline: none; width: 280px;
+    }
+    .share-url button {
+      padding: 6px 14px; background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+      border: none; border-radius: 6px; color: #fff; font-weight: 600; font-size: 0.8rem; cursor: default; font-family: inherit;
+    }
+
+    .main { display: flex; }
+    .sidebar { width: 200px; background: #0d0d0e; border-right: 1px solid #232325; padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; }
+    .sidebar-item { padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: #a1a1aa; display: flex; align-items: center; gap: 10px; cursor: default; }
+    .sidebar-item.active { background: rgba(108,92,231,0.15); color: #a29bfe; }
+    .sidebar-item:not(.active) { opacity: 0.5; }
+
+    .content { flex: 1; padding: 24px; }
+    .kpi-row { display: flex; gap: 14px; margin-bottom: 24px; }
+    .kpi-card { flex: 1; background: #18181a; border: 1px solid #232325; border-radius: 12px; padding: 18px; }
+    .kpi-label { font-size: 0.75rem; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; }
+    .kpi-change { font-size: 0.8rem; margin-top: 4px; }
+    .kpi-up { color: #27c93f; }
+
+    .chat-area { background: #18181a; border: 1px solid #232325; border-radius: 12px; overflow: hidden; }
+    .chat-header { padding: 14px 20px; border-bottom: 1px solid #232325; font-size: 0.85rem; font-weight: 600; display: flex; justify-content: space-between; }
+    .chat-header span { color: #a1a1aa; font-weight: 400; font-size: 0.8rem; }
+    .chat-messages { padding: 14px 20px; max-height: 200px; overflow: hidden; }
+    .chat-message { padding: 10px 14px; border-radius: 10px; font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px; max-width: 80%; }
+    .chat-message.stakeholder { background: #222224; color: #d4d4d8; }
+    .chat-message.agent { background: rgba(108,92,231,0.2); border: 1px solid rgba(108,92,231,0.3); margin-left: auto; border-radius: 10px 10px 2px 10px; }
+    .chat-message .name { font-size: 0.7rem; color: #a1a1aa; margin-bottom: 4px; }
+    .live-indicator { display: flex; align-items: center; gap: 6px; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #27c93f; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+    .viewer-avatars { display: flex; align-items: center; margin-top: 16px; gap: 4px; }
+    .viewer-avatars .mini-avatar { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #18181a; }
+    .viewer-avatars .mini-avatar:nth-child(1) { background: #6c5ce7; z-index: 3; }
+    .viewer-avatars .mini-avatar:nth-child(2) { background: #fd79a8; margin-left: -10px; z-index: 2; }
+    .viewer-avatars .mini-avatar:nth-child(3) { background: #00b894; margin-left: -10px; z-index: 1; }
+    .viewer-avatars span { font-size: 0.8rem; color: #a1a1aa; margin-left: 8px; }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="topbar">
+      <div class="logo">ReportCraft</div>
+      <div class="topbar-right">
+        <span class="badge">Pro</span>
+        <div class="avatar"></div>
+      </div>
+    </div>
+
+    <div class="share-banner">
+      <span>🔗 <strong>Live link created</strong> — anyone with this URL can view the report and ask questions</span>
+      <div class="share-url">
+        <input type="text" value="reportcraft.ai/report/Q2-summary" readonly />
+        <button>Copy link</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="sidebar">
+        <div class="sidebar-item active"><span>📊</span> Q2 Summary</div>
+        <div class="sidebar-item"><span>📁</span> My files</div>
+        <div class="sidebar-item"><span>👥</span> Shared with me</div>
+      </div>
+
+      <div class="content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h1 style="font-size:1.3rem;font-weight:700;">Q2 Executive Summary</h1>
+          <div class="live-indicator">
+            <div class="live-dot"></div>
+            <span style="font-size:0.8rem;color:#27c93f;">3 viewing live</span>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label">Total revenue</div>
+            <div class="kpi-value">£2.4M</div>
+            <div class="kpi-change kpi-up">↑ 12.3%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Gross margin</div>
+            <div class="kpi-value">68.2%</div>
+            <div class="kpi-change kpi-up">↑ 2.1 pp</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Active customers</div>
+            <div class="kpi-value">1,847</div>
+            <div class="kpi-change kpi-up">↑ 8.7%</div>
+          </div>
+        </div>
+
+        <div class="viewer-avatars">
+          <div class="mini-avatar"></div>
+          <div class="mini-avatar"></div>
+          <div class="mini-avatar"></div>
+          <span>Sarah (CEO), James (CFO), Maria (Ops) are viewing</span>
+        </div>
+
+        <div class="chat-area" style="margin-top:24px;">
+          <div class="chat-header">
+            <span>💬 Live Q&A</span>
+            <span>3 participants</span>
+          </div>
+          <div class="chat-messages">
+            <div class="chat-message stakeholder">
+              <div class="name">Sarah (CEO)</div>
+              What drove the 12% revenue growth? Was it price increases or volume?
+            </div>
+            <div class="chat-message agent">
+              <div class="name">ReportCraft AI</div>
+              Primarily volume: units sold grew 14% MoM, led by the EMEA enterprise segment (+22%). Price contributed ~2% through the April upsell campaign. Want me to break it down by product line?
+            </div>
+            <div class="chat-message stakeholder">
+              <div class="name">James (CFO)</div>
+              Yes please — and include gross margin by product line too.
+            </div>
+            <div class="chat-message agent">
+              <div class="name">ReportCraft AI</div>
+              Pulling that now… <span style="color:#a1a1aa;">Product A: +18% rev, 71% margin · Product B: +9% rev, 62% margin · Product C: −2% rev, 55% margin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
