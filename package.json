@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "pnpm@8",
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter landing dev\" \"pnpm --filter dashboard dev\"",
+    "build": "pnpm --filter landing build && pnpm --filter dashboard build",
+    "start": "pnpm --filter landing start && pnpm --filter dashboard start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
