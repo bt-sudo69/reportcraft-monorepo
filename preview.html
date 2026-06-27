@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReportCraft Dashboard Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0b;
+      color: #f4f4f5;
+      -webkit-font-smoothing: antialiased;
+      padding: 32px;
+    }
+    .dashboard {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #111113;
+      border: 1px solid #232325;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid #232325;
+      background: #141415;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 20px; }
+    .logo {
+      font-weight: 700; font-size: 1.15rem;
+      background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .topbar-nav { display: flex; gap: 20px; }
+    .topbar-nav a {
+      color: #a1a1aa; text-decoration: none; font-size: 0.85rem; font-weight: 500;
+      transition: color .2s;
+    }
+    .topbar-nav a:not(.active) { opacity: 0.5; pointer-events: none; }
+    .topbar-nav a:hover, .topbar-nav a.active { color: #f4f4f5; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #6c5ce7, #fd79a8);
+    }
+    .badge {
+      padding: 4px 12px; border-radius: 999px;
+      background: rgba(108,92,231,0.15); border: 1px solid rgba(108,92,231,0.3);
+      color: #a29bfe; font-size: 0.75rem; font-weight: 500;
+    }
+
+    /* Main layout */
+    .main { display: flex; min-height: 600px; }
+    .sidebar {
+      width: 220px;
+      background: #0d0d0e;
+      border-right: 1px solid #232325;
+      padding: 20px 12px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .sidebar-item {
+      padding: 10px 12px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 500; color: #a1a1aa;
+      display: flex; align-items: center; gap: 10px;
+      transition: all .2s; cursor: default;
+    }
+    .sidebar-item.active {
+      background: rgba(108,92,231,0.15); color: #a29bfe;
+    }
+    .sidebar-item:not(.active) { opacity: 0.5; }
+
+    /* Content */
+    .content { flex: 1; padding: 24px; }
+    .content-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .content-header h1 { font-size: 1.5rem; font-weight: 700; }
+    .content-header p { color: #a1a1aa; font-size: 0.9rem; margin-top: 4px; }
+    .btn-primary {
+      padding: 10px 24px; border-radius: 10px;
+      background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+      border: none; color: #fff; font-weight: 600; font-size: 0.85rem;
+      cursor: default; font-family: inherit;
+    }
+
+    /* KPI row */
+    .kpi-row { display: flex; gap: 14px; margin-bottom: 24px; }
+    .kpi-card {
+      flex: 1;
+      background: #18181a;
+      border: 1px solid #232325;
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .kpi-label { font-size: 0.75rem; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; }
+    .kpi-change { font-size: 0.8rem; margin-top: 4px; }
+    .kpi-up { color: #27c93f; }
+    .kpi-down { color: #ff5f56; }
+
+    /* Chart area */
+    .chart-area {
+      background: #18181a;
+      border: 1px solid #232325;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .chart-header { display: flex; justify-content: space-between; margin-bottom: 16px; }
+    .chart-header h3 { font-size: 0.95rem; font-weight: 600; }
+    .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; }
+    .bar {
+      flex: 1;
+      background: linear-gradient(180deg, #6c5ce7, #a29bfe);
+      border-radius: 4px 4px 0 0;
+      min-height: 20px;
+      transition: height .3s;
+      opacity: .8;
+    }
+
+    /* Summary */
+    .summary-area {
+      background: #18181a;
+      border: 1px solid #232325;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .summary-area h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
+    .summary-area p { color: #a1a1aa; font-size: 0.9rem; line-height: 1.7; }
+
+    /* Chat panel */
+    .chat-area {
+      background: #18181a;
+      border: 1px solid #232325;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .chat-header { padding: 14px 20px; border-bottom: 1px solid #232325; font-size: 0.85rem; font-weight: 600; }
+    .chat-messages { padding: 14px 20px; min-height: 80px; }
+    .chat-message {
+      padding: 10px 14px; border-radius: 10px;
+      font-size: 0.85rem; line-height: 1.5;
+      margin-bottom: 8px; max-width: 80%;
+    }
+    .chat-message.ai {
+      background: #222224; color: #d4d4d8;
+      border-radius: 10px 10px 10px 2px;
+    }
+    .chat-message.user {
+      background: rgba(108,92,231,0.2);
+      border: 1px solid rgba(108,92,231,0.3);
+      margin-left: auto;
+      border-radius: 10px 10px 2px 10px;
+    }
+    .chat-input-area {
+      display: flex; padding: 12px 20px; border-top: 1px solid #232325; gap: 8px;
+    }
+    .chat-input-area input {
+      flex: 1; padding: 10px 14px; background: #0a0a0b;
+      border: 1px solid #232325; border-radius: 8px;
+      color: #f4f4f5; font-size: 0.85rem; font-family: inherit; outline: none;
+    }
+    .chat-input-area input:focus { border-color: #6c5ce7; }
+    .chat-input-area button {
+      padding: 10px 18px; background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+      border: none; border-radius: 8px; color: #fff; font-weight: 600; font-size: 0.85rem; cursor: default; font-family: inherit;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="logo">ReportCraft</span>
+        <nav class="topbar-nav">
+          <a href="#" class="active">Dashboard</a>
+          <a href="#">Reports</a>
+          <a href="#">History</a>
+          <a href="#">Settings</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <span class="badge">Pro</span>
+        <div class="avatar"></div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="sidebar">
+        <div class="sidebar-item active"><span>📊</span> Report overview</div>
+        <div class="sidebar-item"><span>📁</span> My files</div>
+        <div class="sidebar-item"><span>📅</span> Monthly review</div>
+        <div class="sidebar-item"><span>📈</span> Revenue trends</div>
+        <div class="sidebar-item"><span>👥</span> Team reports</div>
+      </div>
+
+      <div class="content">
+        <div class="content-header">
+          <div>
+            <h1>Q2 Executive Summary</h1>
+            <p>Generated from <strong>Q2_Sales_Data.xlsx</strong> · 4 sheets analysed · Updated 2 min ago</p>
+          </div>
+          <button class="btn-primary">Export PDF</button>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label">Total revenue</div>
+            <div class="kpi-value">£2.4M</div>
+            <div class="kpi-change kpi-up">↑ 12.3% vs last quarter</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Gross margin</div>
+            <div class="kpi-value">68.2%</div>
+            <div class="kpi-change kpi-up">↑ 2.1 pp</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Active customers</div>
+            <div class="kpi-value">1,847</div>
+            <div class="kpi-change kpi-up">↑ 8.7%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Avg. deal size</div>
+            <div class="kpi-value">£12.4k</div>
+            <div class="kpi-change kpi-down">↓ 3.1%</div>
+          </div>
+        </div>
+
+        <div class="chart-area">
+          <div class="chart-header">
+            <h3>Monthly Revenue (Jan – Jun)</h3>
+            <span style="color:#a1a1aa;font-size:0.8rem;">2026</span>
+          </div>
+          <div class="chart-bars">
+            <div class="bar" style="height:45%"></div>
+            <div class="bar" style="height:52%"></div>
+            <div class="bar" style="height:48%"></div>
+            <div class="bar" style="height:63%"></div>
+            <div class="bar" style="height:71%"></div>
+            <div class="bar" style="height:100%"></div>
+          </div>
+        </div>
+
+        <div class="summary-area">
+          <h3>AI Executive Summary</h3>
+          <p>
+            <strong>Revenue</strong> grew 12.3% QoQ to £2.4M, driven by a strong performance in the EMEA region (+22%) and a successful enterprise upsell campaign in April. 
+            <strong>Gross margin</strong> improved 2.1 percentage points to 68.2%, reflecting lower cost of goods sold following the supplier renegotiation in Q1.
+            <strong>Active customers</strong> increased 8.7% to 1,847, with the highest net-new additions coming from the mid‑market segment.
+            <strong>Average deal size</strong> declined 3.1% to £12.4k, primarily due to a higher volume of SMB sign‑ups in May – a healthy trade‑off indicating strong product‑led growth.
+          </p>
+          <p style="margin-top:10px;color:#a1a1aa;">
+            <strong>Key risk to monitor:</strong> EMEA concentration now accounts for 44% of revenue. A regional slowdown would disproportionately impact Q3 targets. Consider diversifying into APAC.
+          </p>
+        </div>
+
+        <div class="chat-area">
+          <div class="chat-header">💬 Ask about this report</div>
+          <div class="chat-messages">
+            <div class="chat-message ai">What drove the April revenue spike?</div>
+            <div class="chat-message user">The enterprise upsell campaign launched on April 7. We closed 14 deals above £50k, with the largest being a £180k annual contract in the DACH region. Want me to break that down by product line?</div>
+            <div class="chat-message ai">Yes, please show by product line.</div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" placeholder="Ask a follow-up question…" value="What were the top 3 products last month?" />
+            <button>Ask</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
