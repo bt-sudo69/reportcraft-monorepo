@@ -5,46 +5,126 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ReportCraft – AI‑Made Board Reports in One Click</title>
   <meta name="description" content="Upload a CSV/Excel file and get a ready‑to‑share, AI‑written report for your CEO, board or manager – no setup, no API keys." />
-  <!-- Plausible analytics (privacy‑first) -->
-  <script async defer data-domain="reportcraft-git-main-yourname.vercel.app" src="https://plausible.io/js/script.js"></script>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <!-- Plausible analytics -->
+  <script async defer data-domain="reportcraft-monorepo-3ehh.vercel.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="logo">ReportCraft</a>
+      <div class="nav-links">
+        <a href="#how-it-works">How it works</a>
+        <a href="#waitlist" class="btn-nav">Get early access</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
   <section class="hero">
-    <h1>ReportCraft</h1>
-    <p class="subtitle">Turn any spreadsheet into a polished, AI‑generated board‑level report in <strong>seconds</strong>.</p>
+    <div class="container">
+      <div class="hero-badge">✨ Early access — first month free</div>
+      <h1>Turn spreadsheets into<br><span class="gradient-text">board-ready reports</span><br>in one click</h1>
+      <p class="hero-sub">No setup. No API keys. No waiting on the data team.<br>Just upload your file and get a polished, AI‑written report with insights &amp; charts.</p>
 
-    <!-- Demo video (replace with your Loom embed later) -->
-    <div class="video-wrapper">
-      <!-- Placeholder – you’ll replace the iframe src with your Loom video link -->
-      <iframe width="560" height="315" src="https://www.loom.com/embed/placeholder" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <!-- App mockup / render -->
+      <div class="hero-mockup">
+        <div class="mockup-frame">
+          <div class="mockup-header">
+            <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-sidebar">
+              <div class="mockup-sidebar-item active"></div>
+              <div class="mockup-sidebar-item"></div>
+              <div class="mockup-sidebar-item"></div>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-kpi-row">
+                <div class="mockup-kpi"><div class="kpi-bar" style="width:65%"></div><span class="kpi-label">Revenue</span></div>
+                <div class="mockup-kpi"><div class="kpi-bar" style="width:42%"></div><span class="kpi-label">Growth</span></div>
+                <div class="mockup-kpi"><div class="kpi-bar" style="width:78%"></div><span class="kpi-label">Margin</span></div>
+              </div>
+              <div class="mockup-chart-area">
+                <div class="chart-line" style="height:40%"></div>
+                <div class="chart-line" style="height:65%"></div>
+                <div class="chart-line" style="height:45%"></div>
+                <div class="chart-line" style="height:80%"></div>
+                <div class="chart-line" style="height:55%"></div>
+                <div class="chart-line" style="height:90%"></div>
+                <div class="chart-line" style="height:70%"></div>
+              </div>
+              <div class="mockup-summary">
+                <div class="summary-text"></div>
+                <div class="summary-text short"></div>
+              </div>
+              <div class="mockup-chat">
+                <div class="chat-bubble">Revenue grew 12% MoM driven by the EMEA region. Want to break that down?</div>
+                <div class="chat-input"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockup-caption">Actual AI‑generated report output</p>
+      </div>
+
+      <!-- Email capture -->
+      <form id="email-form" class="email-form">
+        <input type="email" id="email" name="email" placeholder="you@yourcompany.com" required />
+        <button type="submit">Get early access →</button>
+      </form>
+      <p class="form-note">We'll keep in touch. No spam, ever.</p>
     </div>
-
-    <form id="email-form" class="email-form">
-      <label for="email">Get early access – first month free</label>
-      <input type="email" id="email" name="email" placeholder="you@yourcompany.com" required />
-      <button type="submit">Notify Me →</button>
-      <p class="tiny">We’ll send you an invite to the private dashboard within 24 h.</p>
-    </form>
   </section>
 
-  <section class="features">
-    <h2>How it works</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>1️⃣ Upload</h3>
-        <p>Drag‑&‑drop a CSV or Excel file (any sheet).</p>
-      </div>
-      <div class="card">
-        <h3>2️⃣ AI analyses</h3>
-        <p>Our model reads the data, picks the right time‑granularity (daily/weekly/monthly/yearly) and writes a concise text.</p>
-      </div>
-      <div class="card">
-        <h3>3️⃣ Review & chat</h3>
-        <p>View the interactive report, ask follow‑up questions, and export PDF/PNG.</p>
+  <!-- How it works -->
+  <section class="features" id="how-it-works">
+    <div class="container">
+      <h2>How it works</h2>
+      <p class="section-sub">Three simple steps from raw data to board‑ready report.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-number">01</div>
+          <h3>Upload your file</h3>
+          <p>Drag‑and‑drop a CSV or Excel file (multiple sheets supported). ReportCraft reads the data, detects date columns, and identifies the right time granularity — no configuration needed.</p>
+        </div>
+        <div class="card">
+          <div class="card-number">02</div>
+          <h3>AI generates the report</h3>
+          <p>Our AI analyses every row, builds interactive charts, and writes a concise executive summary with key trends, outliers, and action items — exactly what the board wants to see.</p>
+        </div>
+        <div class="card">
+          <div class="card-number">03</div>
+          <h3>Review, chat &amp; share</h3>
+          <p>View the full interactive report in your browser. Ask follow‑up questions via the built‑in AI chat, then share a live link so your CEO or board can explore the data themselves — no PDF attachments, no email chains.</p>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- Waitlist CTA -->
+  <section class="cta" id="waitlist">
+    <div class="container">
+      <h2>Ready to try it?</h2>
+      <p>Join the early‑access waitlist. First month free, no credit card required.</p>
+      <form id="email-form-2" class="email-form">
+        <input type="email" id="email-2" name="email" placeholder="you@yourcompany.com" required />
+        <button type="submit">Get early access →</button>
+      </form>
+      <p class="form-note">We'll keep in touch. No spam, ever.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© 2026 ReportCraft</span>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
