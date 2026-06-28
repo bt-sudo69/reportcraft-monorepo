@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6c5ce7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a29bfe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradBar" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6c5ce7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a29bfe;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- KPI Bar icon -->
+  <g transform="translate(20, 30)">
+    <rect x="0" y="45" width="28" height="55" rx="4" fill="url(#gradBar)" opacity="0.5"/>
+    <rect x="36" y="25" width="28" height="75" rx="4" fill="url(#gradBar)" opacity="0.65"/>
+    <rect x="72" y="10" width="28" height="90" rx="4" fill="url(#gradBar)" opacity="0.8"/>
+    <rect x="108" y="30" width="28" height="70" rx="4" fill="url(#gradBar)" opacity="0.55"/>
+  </g>
+
+  <!-- Syncing arrow icon -->
+  <g transform="translate(160, 55)">
+    <path d="M0,25 L20,5 L40,25" stroke="#6c5ce7" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40,15 L40,5 L30,5" stroke="#6c5ce7" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40,5 L20,25 L0,5" stroke="#a29bfe" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  </g>
+
+  <!-- ReportSync text -->
+  <text x="220" y="90" font-family="'Inter',-apple-system,BlinkMacSystemFont,sans-serif" font-size="52" font-weight="800" fill="url(#grad)" letter-spacing="-1.5">ReportSync</text>
+  <text x="220" y="120" font-family="'Inter',-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" font-weight="500" fill="#6b7280" letter-spacing="3">AI · BOARD REPORTS · ONE CLICK</text>
+</svg>
