@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReportSync – Demo Animation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a0b;color:#f4f4f5;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px}
+    .demo{max-width:800px;width:100%;background:#111113;border:1px solid #232325;border-radius:20px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,0.5)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid #232325;background:#141415}
+    .logo{font-weight:800;font-size:15px;background:linear-gradient(135deg,#6c5ce7,#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.3px}
+    .dots{display:flex;gap:6px}
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot.r{background:#ef4444}
+    .dot.y{background:#eab308}
+    .dot.g{background:#22c55e}
+    .body{padding:40px;display:flex;flex-direction:column;align-items:center}
+    
+    /* Stage 1: Upload */
+    .stage{display:none;flex-direction:column;align-items:center;gap:16px;animation:fadeIn 0.6s ease}
+    .stage.active{display:flex}
+    
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes barGrow{from{height:0}to{height:var(--h)}}
+    @keyframes countUp{from{opacity:0}to{opacity:1}}
+
+    .upload-box{width:300px;height:200px;border:2px dashed #232325;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#0d0d10;cursor:pointer;animation:pulse 2s infinite}
+    .upload-box .icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#6c5ce7,#a29bfe);display:flex;align-items:center;justify-content:center;font-size:24px;color:white}
+    .upload-box .text{color:#6b7280;font-size:15px}
+    .upload-box .sub{color:#4b5563;font-size:12px}
+
+    /* Stage 2: Processing */
+    .spinner{width:48px;height:48px;border:4px solid #232325;border-top-color:#6c5ce7;border-radius:50%;animation:spin 1s linear infinite}
+    .progress-bar{width:320px;height:6px;background:#232325;border-radius:3px;overflow:hidden;margin:16px 0}
+    .progress-fill{height:100%;background:linear-gradient(90deg,#6c5ce7,#a29bfe);border-radius:3px;animation:progressAnim 2.5s ease forwards}
+    @keyframes progressAnim{0%{width:0%}20%{width:25%}50%{width:55%}75%{width:78%}100%{width:100%}}
+
+    .processing-steps{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .proc-step{display:flex;align-items:center;gap:10px;color:#6b7280;font-size:13px}
+    .proc-step.done{color:#22c55e}
+    .proc-step .check{width:18px;height:18px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px}
+    .proc-step.done .check{background:#22c55e;border-color:#22c55e;color:white}
+
+    /* Stage 3: Report */
+    .report{width:100%;animation:slideUp 0.8s ease}
+    .report-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+    .report-kpi{background:#0d0d10;border:1px solid #232325;border-radius:12px;padding:16px}
+    .report-kpi .kpi-label{color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+    .report-kpi .kpi-val{color:#f4f4f5;font-size:22px;font-weight:700}
+    .report-kpi .kpi-change{color:#22c55e;font-size:13px;font-weight:500;margin-top:4px}
+    .report-chart{background:#0d0d10;border:1px solid #232325;border-radius:12px;padding:16px;grid-column:1/-1;display:flex;align-items:flex-end;gap:12px;height:140px}
+    .chart-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(to top,#6c5ce7,#a29bfe);animation:barGrow 1s ease forwards;min-height:10px}
+    
+    .nav{display:flex;gap:8px;margin-top:24px}
+    .nav-btn{padding:8px 20px;border-radius:999px;border:1px solid #232325;background:transparent;color:#6b7280;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s}
+    .nav-btn.active{background:linear-gradient(135deg,#6c5ce7,#a29bfe);border-color:transparent;color:white}
+    .nav-btn:hover{background:rgba(108,92,231,0.15);border-color:rgba(108,92,231,0.3);color:#a29bfe}
+    
+    .status-text{color:#6b7280;font-size:14px;margin-top:12px}
+    .status-text strong{color:#a29bfe}
+    
+    h2{color:#f4f4f5;font-size:18px;font-weight:600}
+    .sub{color:#6b7280;font-size:13px;margin-top:4px;margin-bottom:20px}
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <div class="topbar">
+      <div class="logo">ReportSync</div>
+      <div class="dots">
+        <div class="dot r"></div>
+        <div class="dot y"></div>
+        <div class="dot g"></div>
+      </div>
+    </div>
+    <div class="body">
+      <!-- Stage 1: Upload -->
+      <div class="stage" id="stage1">
+        <h2>Drop your data</h2>
+        <div class="sub">CSV or Excel — any sheet, any size</div>
+        <div class="upload-box">
+          <div class="icon">↑</div>
+          <div class="text">Drag & drop your file here</div>
+          <div class="sub">or click to browse</div>
+        </div>
+        <div class="status-text">Supports .csv, .xlsx, .xls</div>
+      </div>
+
+      <!-- Stage 2: Processing -->
+      <div class="stage" id="stage2">
+        <h2>AI is analysing your data</h2>
+        <div class="sub">Reading rows, detecting dates, building your report</div>
+        <div class="spinner" style="margin-top:16px"></div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <div class="processing-steps">
+          <div class="proc-step"><span class="check">✓</span> Reading 1,842 data rows</div>
+          <div class="proc-step"><span class="check">✓</span> Detecting date columns & granularity</div>
+          <div class="proc-step"><span class="check">✓</span> Generating charts & KPIs</div>
+          <div class="proc-step" style="animation-delay:2s"><span class="check">✓</span> Writing executive summary</div>
+        </div>
+      </div>
+
+      <!-- Stage 3: Report -->
+      <div class="stage" id="stage3">
+        <h2>Your report is ready</h2>
+        <div class="sub">AI-generated from your data — share or refine</div>
+        <div class="report">
+          <div class="report-grid">
+            <div class="report-kpi">
+              <div class="kpi-label">Revenue</div>
+              <div class="kpi-val">£248K</div>
+              <div class="kpi-change">↑ 18.2%</div>
+            </div>
+            <div class="report-kpi">
+              <div class="kpi-label">Avg Order Value</div>
+              <div class="kpi-val">£3,240</div>
+              <div class="kpi-change" style="color:#eab308">↑ 4.8%</div>
+            </div>
+            <div class="report-kpi">
+              <div class="kpi-label">Active Clients</div>
+              <div class="kpi-val">47</div>
+              <div class="kpi-change" style="color:#22c55e">+12 new</div>
+            </div>
+            <div class="report-kpi">
+              <div class="kpi-label">Churn Rate</div>
+              <div class="kpi-val">2.3%</div>
+              <div class="kpi-change" style="color:#22c55e">↓ 1.1pp</div>
+            </div>
+            <div class="report-chart">
+              <div class="chart-bar" style="height:55%"></div>
+              <div class="chart-bar" style="height:42%;animation-delay:0.1s"></div>
+              <div class="chart-bar" style="height:68%;animation-delay:0.2s"></div>
+              <div class="chart-bar" style="height:75%;animation-delay:0.3s;background:linear-gradient(to top,#a29bfe,#c4b5fd)"></div>
+              <div class="chart-bar" style="height:60%;animation-delay:0.4s"></div>
+              <div class="chart-bar" style="height:92%;animation-delay:0.5s;background:linear-gradient(to top,#a29bfe,#c4b5fd)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav">
+        <button class="nav-btn active" onclick="goToStage(1)">📁 Upload</button>
+        <button class="nav-btn" onclick="goToStage(2)">⚡ Processing</button>
+        <button class="nav-btn" onclick="goToStage(3)">📊 Report</button>
+      </div>
+      <div class="status-text" id="statusText" style="margin-top:16px;font-size:12px">Click a stage to preview the flow or watch it auto-play</div>
+    </div>
+  </div>
+
+  <div style="max-width:800px;width:100%;margin-top:12px;color:#4b5563;font-size:11px;text-align:center">
+    ReportSync · AI-powered board reports from CSV/Excel in one click
+  </div>
+
+  <script>
+    let currentStage = 1;
+    let autoTimer = null;
+
+    function goToStage(n) {
+      document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+      document.getElementById('stage' + n).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn')[n-1].classList.add('active');
+      currentStage = n;
+      
+      if (n === 2) {
+        // When entering processing, auto-advance to report after 4s
+        clearTimeout(autoTimer);
+        autoTimer = setTimeout(() => {
+          if (currentStage === 2) goToStage(3);
+        }, 4000);
+      }
+      
+      const statusEl = document.getElementById('statusText');
+      const msgs = ['', 'File selected — AI analysis starting...', 'Processing complete — report generated!', ''];
+      if (statusEl && msgs[n]) statusEl.textContent = msgs[n];
+    }
+
+    // Auto-play: start at stage 1, advance to stage 2 after 2.5s, then stage 3 after 4s more
+    setTimeout(() => { if (currentStage === 1) goToStage(2); }, 2500);
+    setTimeout(() => { if (currentStage <= 2) goToStage(3); }, 6500);
+  </script>
+</body>
+</html>
