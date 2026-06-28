@@ -129,9 +129,10 @@
   </footer>
 
   <script src="script.js"></script>
-<script>
 
-<iframe name="ml-iframe" style="display:none" onload="onMLFrameLoad()"></iframe>
+
+
+  <iframe name="ml-iframe" style="display:none" onload="onMLFrameLoad()"></iframe>
 <script>
 var mlSubmitted = false;
 function handleMLSubmit(form) {
@@ -146,7 +147,7 @@ function handleMLSubmit(form) {
   mlSubmitted = true;
   btn.disabled = true;
   btn.textContent = 'Submitting…';
-  return true; // allow form submission to the iframe target
+  return true;
 }
 function onMLFrameLoad() {
   if (!mlSubmitted) return;
