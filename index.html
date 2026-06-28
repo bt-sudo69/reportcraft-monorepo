@@ -79,8 +79,11 @@
       </div>
 
       <!-- Email capture -->
-            <div class="ml-embedded" data-form="jpdYeF"></div>
-      <p class="form-note">We'll keep in touch. No spam, ever.</p>
+      <form id="email-form" class="email-form" onsubmit="return submitToMailerLite(this)">
+        <input type="email" id="email" name="email" placeholder="you@yourcompany.com" required />
+        <button type="submit" id="ml-submit-btn">Get early access →</button>
+      </form>
+      <p class="form-note" id="ml-message">We'll keep in touch. No spam, ever.</p>
     </div>
   </section>
 
@@ -114,11 +117,11 @@
     <div class="container">
       <h2>Ready to try it?</h2>
       <p>Join the early‑access waitlist. First month free, no credit card required.</p>
-      <form id="email-form-2" class="email-form">
+      <form id="email-form-2" class="email-form" onsubmit="return submitToMailerLite(this)">
         <input type="email" id="email-2" name="email" placeholder="you@yourcompany.com" required />
         <button type="submit">Get early access →</button>
       </form>
-      <p class="form-note">We'll keep in touch. No spam, ever.</p>
+      <p class="form-note" id="ml-message">We'll keep in touch. No spam, ever.</p>
     </div>
   </section>
 
@@ -130,5 +133,57 @@
   </footer>
 
   <script src="script.js"></script>
+<script>
+// MailerLite subscription handler - submits via JSONP, looks native
+function submitToMailerLite(form) {
+  var email = form.querySelector('input[type="email"]').value;
+  var btn = form.querySelector('button[type="submit"]');
+  var msg = document.getElementById('ml-message');
+  if (msg) msg.textContent = '';
+
+  if (!email || !email.includes('@')) {
+    if (msg) { msg.textContent = 'Please enter a valid email address.'; msg.style.color = '#ef4444'; }
+    return false;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  // Create a JSONP script element for cross-origin submission
+  var script = document.createElement('script');
+  var callbackName = 'ml_cb_' + Date.now();
+  window[callbackName] = function(response) {
+    delete window[callbackName];
+    btn.disabled = false;
+    btn.textContent = 'Get early access →';
+    if (response && response.success) {
+      if (msg) {
+        msg.textContent = 'Thanks! Check your inbox to confirm your subscription.';
+        msg.style.color = '#22c55e';
+      }
+      form.querySelector('input[type="email"]').value = '';
+    } else {
+      if (msg) {
+        msg.textContent = 'Something went wrong. Please try again.';
+        msg.style.color = '#ef4444';
+      }
+    }
+  };
+
+  script.src = 'https://assets.mailerlite.com/jsonp/2475854/forms/191513483980834753/subscribe?callback=' + callbackName + 
+    '&fields[email]=' + encodeURIComponent(email) + '&ml-submit=1';
+  script.onerror = function() {
+    delete window[callbackName];
+    btn.disabled = false;
+    btn.textContent = 'Get early access →';
+    if (msg) {
+      msg.textContent = 'Network error. Please try again.';
+      msg.style.color = '#ef4444';
+    }
+  };
+  document.body.appendChild(script);
+  return false; // prevent default form submission
+}
+</script>
 </body>
 </html>
