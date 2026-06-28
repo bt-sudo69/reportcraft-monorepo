@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReportSync – Before & After</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,sans-serif;width:1200px;height:627px;background:#0a0a0b;display:flex;overflow:hidden}
+    .card{display:flex;width:100%;height:100%;background:linear-gradient(135deg,#111113 0%,#1a1a1f 100%)}
+    .left{flex:1;padding:60px 50px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #232325}
+    .right{flex:1;padding:60px 50px;display:flex;flex-direction:column;justify-content:center}
+    .badge{display:inline-block;padding:6px 16px;border-radius:999px;background:rgba(108,92,231,0.15);border:1px solid rgba(108,92,231,0.3);color:#a29bfe;font-size:13px;font-weight:600;letter-spacing:0.5px;margin-bottom:24px;width:fit-content}
+    h2{color:#f4f4f5;font-size:22px;font-weight:600;margin-bottom:16px;letter-spacing:-0.3px}
+    .old-way{color:#6b7280;font-size:15px;line-height:1.8;margin-bottom:28px}
+    .old-way li{margin-bottom:8px;list-style:none;display:flex;align-items:center;gap:10px}
+    .old-way li::before{content:"✕";color:#ef4444;font-size:13px;font-weight:700}
+    .new-way li{margin-bottom:8px;list-style:none;display:flex;align-items:center;gap:10px}
+    .new-way li::before{content:"✓";color:#22c55e;font-size:14px;font-weight:700}
+    .time{color:#22c55e;font-size:28px;font-weight:800;margin-top:20px}
+    .time-label{color:#6b7280;font-size:13px}
+    .divider{width:40px;height:3px;background:linear-gradient(90deg,#6c5ce7,#a29bfe);border-radius:2px;margin:24px 0}
+    .gtext{background:linear-gradient(135deg,#6c5ce7,#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .logo{font-size:20px;font-weight:800;background:linear-gradient(135deg,#6c5ce7,#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:40px;letter-spacing:-0.5px}
+    .tagline{color:#6b7280;font-size:12px;font-weight:500;letter-spacing:3px;text-transform:uppercase;margin-top:auto;padding-top:40px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="left">
+      <div class="logo">ReportSync</div>
+      <div class="badge">✕ THE OLD WAY</div>
+      <h2>Manual Reporting</h2>
+      <ul class="old-way">
+        <li>Open Excel & build charts manually</li>
+        <li>Write commentary by hand</li>
+        <li>Format for 2 hours</li>
+        <li>Export as PDF</li>
+        <li>Email to stakeholders</li>
+      </ul>
+      <div class="time">4+ hours</div>
+      <div class="time-label">per report</div>
+    </div>
+    <div class="right">
+      <div class="badge" style="background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.3);color:#22c55e">✓ THE REPORTYNC WAY</div>
+      <h2>AI‑Powered Reporting</h2>
+      <ul class="new-way">
+        <li>Upload CSV / Excel file</li>
+        <li>AI reads data & detects dates</li>
+        <li>Charts & executive summary generated</li>
+        <li>Share as interactive report</li>
+        <li>Refine via chat</li>
+      </ul>
+      <div class="time">2 minutes</div>
+      <div class="time-label">per report</div>
+      <div class="divider"></div>
+      <div style="color:#f4f4f5;font-size:14px;font-weight:600"><span class="gtext">95% faster</span> · First month free</div>
+      <div style="color:#6b7280;font-size:12px;margin-top:4px">reportsync.app</div>
+    </div>
+  </div>
+</body>
+</html>
